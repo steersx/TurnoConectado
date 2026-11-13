@@ -84,7 +84,7 @@ function register(e) {
   } if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     err.textContent = "Informe um e-mail válido.";
     return
-  } if (phone.replace(/\D/g, "").length < 10) {
+  } if (phone.replace(/\D/g, "").length < 11) {
     err.textContent = "Informe um telefone válido com DDD.";
     return
   } if (!/^\d{4}$/.test(pin)) {
@@ -454,10 +454,18 @@ function exportData(type) {
 }
 $("#register-phone").addEventListener("input", e => {
   let v = e.target.value.replace(/\D/g, "").slice(0, 11);
-  if (v.length > 6) v = `(${v.slice(0, 2)}) ${v.slice(2, 3)} 
-  ${v.slice(3, 7)}-${v.slice(7)}`;
-  else if (v.length > 2) v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-  else if (v.length) v = `(${v}`; e.target.value = v
+
+  if (v.length > 7) {
+    v = `(${v.slice(0, 2)}) ${v.slice(2, 3)} ${v.slice(3, 7)}-${v.slice(7, 11)}`;
+  } else if (v.length > 3) {
+    v = `(${v.slice(0, 2)}) ${v.slice(2, 3)} ${v.slice(3)}`;
+  } else if (v.length > 2) {
+    v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+  } else if (v.length > 0) {
+    v = `(${v}`;
+  }
+
+  e.target.value = v;
 });
 $("#register-ra").addEventListener("input", e => e.target.value = e.target.value.replace(/\D/g, "").slice(0, 8));
 $("#login-ra").addEventListener("input", e => e.target.value = e.target.value.replace(/\D/g, "").slice(0, 8));
