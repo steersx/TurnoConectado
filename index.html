@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#06152a" />
+  <title>Turno Conectado | Teste 3</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="imgns/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="imgns/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="imgns/apple-touch-icon.png">
+</head>
+
+<body>
+  <section id="login-screen" class="login-screen">
+    <div class="login-card auth-card">
+      <div class="brand login-brand">
+        <span class="brand-mark">
+          <img src="imgns/android-chrome-512x512.png" alt="Turno Conectado" class="logo-img">
+        </span>
+        <span>TURNO<br><b>CONECTADO</b></span>
+      </div>
+      <p class="eyebrow">MANUTENÇÃO INDUSTRIAL</p>
+      <h1>Um turno conectado.<br>Uma operação mais segura.</h1>
+      <p class="muted">Acesse para acompanhar máquinas, ocorrências e a continuidade entre turnos.</p>
+      <div id="auth-choice" class="auth-choice">
+        <button id="show-register" class="primary-btn full" type="button">Cadastrar <span>＋</span></button>
+        <button id="show-login" class="secondary-btn full" type="button">Entrar <span>→</span></button>
+      </div>
+      <form id="register-form" class="auth-form hidden">
+        <h2>Primeiro cadastro</h2>
+        <label>E-mail corporativo<input id="register-email" type="email" autocomplete="email"
+            placeholder="Digite seu e-mail corporativo" required /></label>
+        <label>Nome e sobrenome<input id="register-name" autocomplete="name" placeholder="Ex.: Maria Aguiar"
+            required /></label>
+        <label>Número de telefone<input id="register-phone" type="tel" inputmode="tel" autocomplete="tel"
+            placeholder="(00) 9 0000-0000" maxlength="16" required /></label>
+        <label>Crie uma senha de 4 dígitos<input id="register-pin" type="password" inputmode="numeric" maxlength="4"
+            pattern="[0-9]{4}" placeholder="Crie sua senha" required /></label>
+        <label>RA<input id="register-ra" inputmode="numeric" maxlength="8" placeholder="Digite seu RA"
+            required /></label>
+        <button class="primary-btn full" type="submit">Concluir cadastro <span>✓</span></button>
+        <button id="back-from-register" class="auth-back" type="button">← Voltar</button>
+        <p id="register-error" class="error-msg" role="alert"></p>
+      </form>
+      <form id="login-form" class="auth-form hidden">
+        <h2>Entrar no sistema</h2>
+        <label>Nome e sobrenome<input id="login-name" autocomplete="name" placeholder="Ex.: Maria Aguiar"
+            required /></label>
+        <label>RA<input id="login-ra" inputmode="numeric" maxlength="8" placeholder="Digite seu RA" required /></label>
+        <label>Senha de 4 dígitos<input id="login-pin" inputmode="numeric" maxlength="4" type="password"
+            placeholder="••••" required /></label>
+        <button class="primary-btn full" type="submit">Entrar no sistema <span>→</span></button>
+        <button id="back-from-login" class="auth-back" type="button">← Voltar</button>
+        <p id="login-error" class="error-msg" role="alert"></p>
+      </form>
+      <p class="login-foot">CONTROLE OPERACIONAL · MANUTENÇÃO · CONTINUIDADE</p>
+    </div>
+  </section>
+
+  <div id="app" class="app-shell hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><img src="imgns/android-chrome-512x512.png" alt="Turno Conectado"
+            class="logo-img"></span>
+        <span class="brand-name"> TURNO<br><b>CONECTADO</b></span>
+      </div>
+      <button class="mobile-close" id="close-menu" aria-label="Fechar menu">×</button>
+      <nav id="main-nav">
+        <button class="nav-item active" data-page="dashboard"><span>⌂</span><b>Dashboard</b></button>
+        <button class="nav-item" data-page="maquinas"><span>⚙</span><b>Máquinas</b></button>
+        <button class="nav-item" data-page="ocorrencias"><span>⚠</span><b>Ocorrências</b></button>
+        <button class="nav-item" data-page="registrar"><span>▣</span><b>Registrar</b></button>
+        <button class="nav-item" data-page="historico"><span>◴</span><b>Histórico</b></button>
+        <button class="nav-item manager-only" data-page="gestao"><span>♟</span><b>Gestão</b></button>
+        <div class="nav-caption">RELATÓRIOS</div>
+        <button class="nav-item manager-only" data-page="indicadores"><span>▥</span><b>Indicadores</b></button>
+        <button class="nav-item" data-page="manutencoes"><span>🔧</span><b>Manutenções</b></button>
+        <button class="nav-item manager-only" data-page="exportar"><span>⇩</span><b>Exportar</b></button>
+      </nav>
+      <div class="sidebar-bottom"><span class="wifi">◉</span>
+        <div><b>Turno Conectado</b><small>Juntos por uma operação<br>mais eficiente!</small></div>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+    <main class="main-area">
+      <header class="topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
+        <div class="top-message">Manutenção sem barreiras.<small>Informação que mantém a indústria em movimento.</small>
+        </div>
+        <div class="top-actions">
+          <div class="date-box"><span>▣</span>
+            <div id="date-time">11 de novembro de 2026<small>15:00</small></div>
+          </div><button class="icon-btn" id="notifications" title="Notificações">♧<i
+              id="notification-count">0</i></button>
+          <div class="profile-wrap"><button id="profile-button" class="profile-button"><span
+                class="avatar">●</span><span>
+                <b id="profile-role">Funcionário</b><small id="profile-name">Usuário</small></span><span>⌄</span>
+            </button>
+            <div id="profile-menu" class="profile-menu hidden"><button id="profile-details">Meu perfil</button>
+              <button id="logout-button">Sair</button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="content">
+        <section id="page-dashboard" class="page active">
+          <div class="page-heading">
+            <div>
+              <h1 id="greeting">Olá!</h1>
+              <p>Confira o resumo da operação e acompanhe as ocorrências em tempo real.</p>
+            </div>
+            <span class="live-pill"><i></i> DADOS DO PROTÓTIPO</span>
+          </div>
+          <div class="kpi-grid" id="kpi-grid"></div>
+          <div class="dashboard-grid">
+            <article class="panel status-panel">
+              <div class="panel-title">
+                <h3>Status das máquinas</h3>
+              </div>
+              <div class="chart-layout">
+                <div class="donut" id="machine-donut">
+                  <div>
+                    <strong id="machine-total">0</strong><small>máquinas</small>
+                  </div>
+                </div>
+                <div class="legend" id="machine-legend"></div>
+              </div>
+            </article>
+            <article class="panel recent-panel">
+              <div class="panel-title">
+                <h3>Ocorrências recentes</h3>
+                <button class="text-link" data-go="ocorrencias">Ver todas →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Máquina</th>
+                      <th>Problema</th>
+                      <th>Turno</th>
+                      <th>Status</th>
+                      <th>Responsável</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-table"></tbody>
+                </table>
+              </div>
+            </article>
+            <article class="panel types-panel">
+              <div class="panel-title">
+                <h3>Tipos de manutenção</h3>
+              </div>
+              <div class="chart-layout type-chart">
+                <div class="donut type-donut" id="type-donut">
+                  <div><strong id="type-total">0</strong>
+                    <small>registros</small>
+                  </div>
+                </div>
+                <div class="legend" id="type-legend">
+                </div>
+              </div>
+          </div>
+          </article>
+          <article class="panel continuity-panel">
+            <div class="panel-title">
+              <h3><span class="blue-symbol">⇄</span> Continuidade entre turnos</h3>
+              <button class="text-link" data-go="historico">Ver todas →</button>
+            </div>
+            <div id="continuity-card"></div>
+          </article>
+          <article class="panel indicators-panel manager-only">
+            <div class="panel-title">
+              <h3>Indicadores do mês</h3><button class="text-link" data-go="indicadores">Ver mais →</button>
+            </div>
+            <div class="mini-indicators" id="mini-indicators"></div>
+          </article>
+          <article class="panel sectors-panel manager-only">
+            <div class="panel-title">
+              <h3>Ocorrências por setor</h3>
+            </div>
+            <div id="sector-bars"></div>
+          </article>
+          <article class="panel maintenance-panel">
+            <div class="panel-title">
+              <h3>Últimas manutenções realizadas</h3><button class="text-link" data-go="manutencoes">Ver todas
+                →</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Máquina</th>
+                    <th>Tipo</th>
+                    <th>Data / Hora</th>
+                    <th>Responsável</th>
+                    <th>Tempo parada</th>
+                  </tr>
+                </thead>
+                <tbody id="maintenance-table"></tbody>
+              </table>
+            </div>
+          </article>
+          <article class="panel alert-panel">
+            <div class="panel-title">
+              <h3>⚠ Atenção</h3><button class="text-link" data-go="ocorrencias">Ver todas →</button>
+            </div>
+            <div id="alerts"></div>
+            <div class="filters"><b>Filtros</b>
+              <div class="filter-row"><label>Período<select id="period-filter">
+                    <option value="all">Todo período</option>
+                    <option value="7">Últimos 7 dias</option>
+                  </select></label><label>Setor<select id="sector-filter">
+                    <option value="all">Todos</option>
+                  </select></label><label>Turno<select id="shift-filter">
+                    <option value="all">Todos</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                  </select></label></div>
+            </div>
+          </article>
+          <article class="panel machine-history-panel manager-only">
+            <div class="panel-title">
+              <h3>Histórico da máquina</h3>
+            </div>
+            <div id="machine-history-preview"></div>
+          </article>
+      </div>
+      </section>
+      <section id="page-maquinas" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>Máquinas</h1>
+            <p>Consulte a situação e o histórico operacional dos equipamentos.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="toolbar"><input id="machine-search" placeholder="Buscar máquina ou setor..." /><span
+              id="machine-count" class="muted"></span></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Máquina</th>
+                  <th>Setor</th>
+                  <th>Status</th>
+                  <th>Tipo</th>
+                  <th>Última atualização</th>
+                </tr>
+              </thead>
+              <tbody id="machines-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel ai-panel">
+          <div class="panel-title">
+            <h3>✦ Resumo inteligente</h3><span class="live-pill">ASSISTENTE DO PROTÓTIPO</span>
+          </div>
+          <div class="toolbar"><select id="machine-ai-select">
+              <option value="">Selecione uma máquina</option>
+            </select><button class="primary-btn" id="machine-ai-button" type="button">Gerar resumo</button></div>
+          <div id="machine-ai-summary" class="ai-copy">Selecione uma máquina para analisar situação, ocorrências
+            anteriores e continuidade.</div>
+        </div>
+      </section>
+      <section id="page-ocorrencias" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>Ocorrências</h1>
+            <p>Falhas registradas e pendências que precisam de continuidade.</p>
+          </div><button class="primary-btn" data-go="registrar">＋ Registrar ocorrência</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar"><input id="occ-search"
+              placeholder="Buscar por máquina, problema ou responsável..." /><select id="occ-status">
+              <option value="all">Todos os status</option>
+              <option>Em análise</option>
+              <option>Em teste</option>
+              <option>Pendente</option>
+              <option>Resolvido</option>
+              <option>Em manutenção</option>
+            </select></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Máquina</th>
+                  <th>Problema</th>
+                  <th>Turno</th>
+                  <th>Área</th>
+                  <th>Status</th>
+                  <th>Responsável</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="occ-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="page-registrar" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>Registrar ocorrência</h1>
+            <p>Registre o que aconteceu e deixe a próxima equipe informada.</p>
+          </div>
+        </div>
+        <div class="panel form-panel">
+          <form id="occ-form" class="form-grid"><label>Máquina<input name="machine" placeholder="Ex.: Máquina 23"
+                required /></label><label>Setor<select name="sector" required>
+                <option value="">Selecione</option>
+                <option>Usinagem</option>
+                <option>Montagem</option>
+                <option>Caldeiraria</option>
+                <option>Embalagem</option>
+                <option>Utilidades</option>
+              </select></label><label>Turno<select name="shift">
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select></label><label>Área responsável<select name="area">
+                <option>Manutenção Preditiva</option>
+                <option>Manutenção Preventiva</option>
+                <option>Manutenção Corretiva</option>
+              </select></label><label class="span-2">Problema identificado<input name="problem"
+                placeholder="Descreva a falha observada" required /></label><label class="span-2">O que foi
+              realizado?<textarea name="action" rows="3" placeholder="Descreva a intervenção realizada..."
+                required></textarea></label><label class="span-2">Teste realizado<textarea name="test" rows="2"
+                placeholder="Informe os testes executados"></textarea></label><label class="span-2">Resultado do
+              teste<textarea name="result" rows="2" placeholder="Informe o resultado obtido"></textarea></label>
+            <div class="span-2 ai-organize-row"><button class="secondary-btn" id="organize-occurrence" type="button">✦
+                Organizar com IA</button><span class="muted">Organiza os dados preenchidos em um registro
+                estruturado.</span></div>
+            <div id="organized-preview" class="span-2 ai-preview hidden"></div><label>Status<select name="status">
+                <option>Em análise</option>
+                <option>Em manutenção</option>
+                <option>Em teste</option>
+                <option>Pendente</option>
+                <option>Resolvido</option>
+              </select></label><label>Máquina liberada?<select name="released">
+                <option>Não</option>
+                <option>Sim</option>
+              </select></label><label class="span-2">Orientação para o próximo turno<textarea name="handoff" rows="3"
+                placeholder="O que a próxima equipe precisa saber?"></textarea></label>
+            <div class="span-2 form-actions"><button class="primary-btn" type="submit">Salvar ocorrência</button><span
+                id="form-feedback" class="success-msg"></span></div>
+          </form>
+        </div>
+      </section>
+      <section id="page-historico" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>Histórico e continuidade</h1>
+            <p>Veja a sequência de acontecimentos e as orientações deixadas entre turnos.</p>
+          </div>
+        </div>
+        <div id="timeline" class="timeline"></div>
+      </section>
+      <section id="page-gestao" class="page manager-page">
+        <div class="page-heading">
+          <div>
+            <h1>Gestão</h1>
+            <p>Visão completa da operação, equipes, registros e continuidade.</p>
+          </div>
+        </div>
+        <div class="kpi-grid" id="manager-kpis"></div>
+        <div class="panel">
+          <h3>Resumo inteligente</h3>
+          <p id="ai-summary" class="ai-copy"></p><button class="primary-btn" id="refresh-ai">Gerar novo resumo</button>
+        </div>
+        <div class="panel">
+          <h3>Alerta de retrabalho</h3>
+          <div id="rework-alerts"></div>
+        </div>
+        <div class="panel ai-panel">
+          <div class="panel-title">
+            <h3>✦ Analisar histórico com IA</h3><span class="live-pill">VISÃO DA GESTÃO</span>
+          </div>
+          <p class="muted">Selecione uma máquina para consultar ocorrências, procedimentos, resultados, responsáveis e
+            possíveis recorrências.</p>
+          <div class="toolbar"><select id="manager-machine-select">
+              <option value="">Selecione uma máquina</option>
+            </select><button class="primary-btn" id="analyze-machine-history" type="button">Analisar histórico</button>
+          </div>
+          <div id="manager-machine-analysis" class="ai-copy">A análise detalhada será exibida aqui.</div>
+        </div>
+      </section>
+      <section id="page-indicadores" class="page manager-page">
+        <div class="page-heading">
+          <div>
+            <h1>Indicadores</h1>
+            <p>Indicadores operacionais calculados a partir dos registros do protótipo.</p>
+          </div><button class="primary-btn" data-export="indicators">⇩ Baixar indicadores</button>
+        </div>
+        <div class="kpi-grid" id="indicator-kpis"></div>
+        <div class="panel">
+          <h3>Ocorrências por setor</h3>
+          <div id="indicator-sectors"></div>
+        </div>
+      </section>
+      <section id="page-manutencoes" class="page">
+        <div class="page-heading">
+          <div>
+            <h1>Manutenções</h1>
+            <p>Intervenções registradas pelas equipes de manutenção.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Máquina</th>
+                  <th>Tipo / Área</th>
+                  <th>Problema</th>
+                  <th>Responsável</th>
+                  <th>Data / Hora</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="all-maintenance"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="page-exportar" class="page manager-page">
+        <div class="page-heading">
+          <div>
+            <h1>Exportar dados</h1>
+            <p>Baixe os registros e indicadores para análise e acompanhamento.</p>
+          </div>
+        </div>
+        <div class="export-grid">
+          <article class="panel"><span class="export-icon">▤</span>
+            <h3>Ocorrências</h3>
+            <p>Todos os registros, responsáveis, turnos e status.</p><button class="primary-btn"
+              data-export="occurrences">Baixar CSV</button>
+          </article>
+          <article class="panel"><span class="export-icon">▥</span>
+            <h3>Indicadores</h3>
+            <p>Resumo de máquinas, falhas, status e manutenção.</p><button class="primary-btn"
+              data-export="indicators">Baixar CSV</button>
+          </article>
+          <article class="panel"><span class="export-icon">◷</span>
+            <h3>Histórico</h3>
+            <p>Linha do tempo das ocorrências e passagens de turno.</p><button class="primary-btn"
+              data-export="history">Baixar CSV</button>
+          </article>
+          <article class="panel"><span class="export-icon">⇩</span>
+            <h3>Backup completo</h3>
+            <p>Exporta os dados do protótipo em formato JSON.</p><button class="primary-btn" data-export="backup">Baixar
+              JSON</button>
+          </article>
+        </div>
+      </section>
+  </div>
+  </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+
+</html>

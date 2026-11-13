@@ -1,0 +1,39 @@
+TURNO CONECTADO — TESTE 3
+
+ARQUIVOS
+- index.html: estrutura das telas
+- style.css: identidade visual e responsividade
+- app.js: login, cadastro, registros, indicadores e assistentes locais
+
+COMO ABRIR
+1. Extraia o ZIP.
+2. Abra a pasta no Visual Studio Code.
+3. Abra o index.html com a extensão Live Server.
+
+CADASTRO E LOGIN
+- Escolha Cadastrar no primeiro acesso.
+- Preencha e-mail, nome e sobrenome, telefone, senha de 4 dígitos e RA.
+- O RA precisa estar autorizado e corresponder ao nome cadastrado no sistema.
+- Nos próximos acessos, escolha Entrar e informe nome e sobrenome, RA e senha.
+- RAs autorizados estão definidos no início de app.js.
+
+ACESSO AUTORIZADO
+Manutenção:
+Kauanny Brito — 567832 — Preditiva
+Gabryelle Piedade — 135739 — Preventiva
+Mariana Coelho — 142167 — Corretiva
+
+Gestão:
+Tainá Silva — 11124691
+Ester Barbosa — 11192781
+Daise Mirelly — 11135670
+
+RECURSOS DE ASSISTÊNCIA INTELIGENTE
+- Máquinas: resumo de situação e ocorrências da máquina selecionada.
+- Registrar ocorrência: organiza problema, procedimento, teste, resultado, status e próxima etapa.
+- Gestão: análise detalhada do histórico da máquina selecionada e alerta de recorrência.
+
+IMPORTANTE SOBRE IA E SEGURANÇA
+Esta entrega é um protótipo estático em HTML/CSS/JavaScript. Os assistentes atuais organizam e analisam os dados localmente por regras; não fazem chamadas a um modelo generativo externo. Para IA generativa real, será necessário conectar um serviço de IA por um backend seguro, sem expor chaves de API no navegador.
+
+Os cadastros, senhas, máquinas e ocorrências ficam no armazenamento local do navegador. Portanto, não são sincronizados entre dispositivos ou usuários. As restrições de gestores no front-end são adequadas apenas para demonstração; antes de uso real, implementar autenticação, permissões e banco de dados no servidor.
